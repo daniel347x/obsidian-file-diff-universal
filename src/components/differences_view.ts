@@ -54,7 +54,7 @@ export class DifferencesView extends ItemView {
 		if (this.state?.diffIndex !== undefined) {
 			const emojiMap: { [key: number]: string } = { 0: '📜', 1: '⚔️', 2: '📖', 3: '🗡️', 4: '🏺', 5: '🔱', 6: '🛡️', 7: '⚖️', 8: '🕯️', 9: '🏛️' };
 			const emoji = emojiMap[this.state.diffIndex] || '📜';
-			return `${emoji} SUNDERED SCROLLS [${this.state.diffIndex}]`;
+			return `${emoji} SUNBURNED SCROLLS [${this.state.diffIndex}]`;
 		}
 		if (this.state?.file1 && this.state?.file2) {
 			return (
