@@ -12,7 +12,7 @@ export default class FileDiffPlugin extends Plugin {
 	fileDiffMergeWarningKey = 'file-diff-merge-warning';
 	
 	// Hardcoded vault-relative path for diff spec files (at vault root)
-	readonly DIFF_SPEC_BASE_PATH = 'temp/obsidian-diff/diff-spec-';
+	readonly DIFF_SPEC_BASE_PATH = "__Inking into Mind/--TypingMind/Projects - All/Projects - Individual/TODO/temp/obsidian-diff/diff-spec-"
 
 	override onload(): void {
 		this.registerView(
