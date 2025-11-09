@@ -10,6 +10,9 @@ import { SelectFileModal } from './components/modals/select_file_modal';
 
 export default class FileDiffPlugin extends Plugin {
 	fileDiffMergeWarningKey = 'file-diff-merge-warning';
+	
+	// Hardcoded path for diff spec files (Windows absolute path)
+	readonly DIFF_SPEC_BASE_PATH = 'E:\\__daniel347x\\__Obsidian\\__Inking into Mind\\--TypingMind\\Projects - All\\Projects - Individual\\TODO\\temp\\obsidian-diff\\diff-spec-';
 
 	override onload(): void {
 		this.registerView(
@@ -114,6 +117,40 @@ export default class FileDiffPlugin extends Plugin {
 				}
 			},
 		});
+
+		// Add 10 indexed compare commands (Index 0-9)
+		for (let i = 0; i < 10; i++) {
+			this.addCommand({
+				id: `compare-indexed-${i}`,
+				name: `Compare (Index ${i})`,
+				callback: async () => {
+					try {
+						// Read diff spec from hardcoded temp location
+						const specPath = `${this.DIFF_SPEC_BASE_PATH}${i}.json`;
+						const specContent = await this.app.vault.adapter.read(specPath);
+						const spec = JSON.parse(specContent);
+
+						// Get TFile objects from vault-relative paths
+						const file1 = this.app.vault.getAbstractFileByPath(spec.file1);
+						const file2 = this.app.vault.getAbstractFileByPath(spec.file2);
+
+						if (!file1 || !file2) {
+							console.error(`File Diff Index ${i}: Could not find files`, spec);
+							return;
+						}
+
+						// Open diff view directly (no modal)
+						this.openDifferencesView({
+							file1: file1 as TFile,
+							file2: file2 as TFile,
+							showMergeOption: false,
+						});
+					} catch (error) {
+						console.error(`File Diff Index ${i}: Failed to load spec`, error);
+					}
+				},
+			});
+		}
 	}
 
 	override async onunload(): Promise<void> {
