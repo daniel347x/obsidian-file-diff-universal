@@ -1,7 +1,7 @@
 {
 	"id": "file-diff-universal",
 	"name": "File Diff (Universal)",
-	"version": "1.3.3",
+	"version": "1.3.4",
 	"minAppVersion": "0.15.0",
 	"description": "Shows the differences between two files (supports all text file types in reading mode + indexed comparisons).",
 	"author": "Till Friebe (forked by Dan)",

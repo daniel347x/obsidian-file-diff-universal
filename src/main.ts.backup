@@ -162,8 +162,8 @@ export default class FileDiffPlugin extends Plugin {
 						this.openDifferencesView({
 							file1: file1 as TFile,
 							file2: file2 as TFile,
+t						diffIndex: i,
 							showMergeOption: false,
-							diffIndex: i,
 						});
 
 						console.log(`[File Diff Index ${i}] Diff view opened successfully`);

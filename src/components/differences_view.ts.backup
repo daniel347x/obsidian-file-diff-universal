@@ -9,7 +9,6 @@ import { DeleteFileModal } from './modals/delete_file_modal';
 export const VIEW_TYPE_DIFFERENCES = 'differences-view';
 
 export interface ViewState {
-	diffIndex?: number;
 	file1: TFile;
 	file2: TFile;
 	showMergeOption: boolean;
@@ -51,9 +50,6 @@ export class DifferencesView extends ItemView {
 	}
 
 	override getDisplayText(): string {
-		if (this.state?.diffIndex !== undefined) {
-			return `*FILEDIFF${this.state.diffIndex}`;
-		}
 		if (this.state?.file1 && this.state?.file2) {
 			return (
 				`File Diff: ${this.state.file1.name} ` +
