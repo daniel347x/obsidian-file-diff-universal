@@ -11,8 +11,8 @@ import { SelectFileModal } from './components/modals/select_file_modal';
 export default class FileDiffPlugin extends Plugin {
 	fileDiffMergeWarningKey = 'file-diff-merge-warning';
 	
-	// Hardcoded vault-relative path for diff spec files (at vault root)
-	readonly DIFF_SPEC_BASE_PATH = "__Inking into Mind/--TypingMind/Projects - All/Projects - Individual/TODO/temp/obsidian-diff/diff-spec-"
+	// Hardcoded vault-relative path for diff spec files
+	readonly DIFF_SPEC_BASE_PATH = '__Inking into Mind/--TypingMind/Projects - All/Projects - Individual/TODO/temp/obsidian-diff/diff-spec-';
 
 	override onload(): void {
 		this.registerView(
@@ -163,7 +163,6 @@ export default class FileDiffPlugin extends Plugin {
 							file1: file1 as TFile,
 							file2: file2 as TFile,
 							showMergeOption: false,
-							diffIndex: i,
 						});
 
 						console.log(`[File Diff Index ${i}] Diff view opened successfully`);
