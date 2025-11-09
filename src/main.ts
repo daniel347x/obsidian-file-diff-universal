@@ -20,52 +20,65 @@ export default class FileDiffPlugin extends Plugin {
 		this.addCommand({
 			id: 'compare',
 			name: 'Compare',
-			editorCallback: async () => {
+			checkCallback: (checking: boolean) => {
 				const activeFile = this.app.workspace.getActiveFile();
 				if (activeFile == null) {
-					return;
+					return false;
 				}
 
-				const compareFile = await this.getFileToCompare(activeFile);
-				if (compareFile == null) {
-					return;
+				if (!checking) {
+					this.getFileToCompare(activeFile).then(compareFile => {
+						if (compareFile == null) {
+							return;
+						}
+
+						this.openDifferencesView({
+							file1: activeFile,
+							file2: compareFile,
+							showMergeOption: false,
+						});
+					});
 				}
 
-				this.openDifferencesView({
-					file1: activeFile,
-					file2: compareFile,
-					showMergeOption: false,
-				});
+				return true;
 			},
 		});
 
 		this.addCommand({
 			id: 'compare-and-merge',
 			name: 'Compare and merge',
-			editorCallback: async () => {
-				// Show warning when this option is selected for the first time
-				if (!localStorage.getItem(this.fileDiffMergeWarningKey)) {
-					await this.showRiskyActionModal();
-					if (!localStorage.getItem(this.fileDiffMergeWarningKey)) {
-						return;
-					}
-				}
-
+			checkCallback: (checking: boolean) => {
 				const activeFile = this.app.workspace.getActiveFile();
 				if (activeFile == null) {
-					return;
+					return false;
 				}
 
-				const compareFile = await this.getFileToCompare(activeFile);
-				if (compareFile == null) {
-					return;
+				if (!checking) {
+					// Show warning when this option is selected for the first time
+					const proceedWithMerge = async () => {
+						if (!localStorage.getItem(this.fileDiffMergeWarningKey)) {
+							await this.showRiskyActionModal();
+							if (!localStorage.getItem(this.fileDiffMergeWarningKey)) {
+								return;
+							}
+						}
+
+						const compareFile = await this.getFileToCompare(activeFile);
+						if (compareFile == null) {
+							return;
+						}
+
+						this.openDifferencesView({
+							file1: activeFile,
+							file2: compareFile,
+							showMergeOption: true,
+						});
+					};
+
+					proceedWithMerge();
 				}
 
-				this.openDifferencesView({
-					file1: activeFile,
-					file2: compareFile,
-					showMergeOption: true,
-				});
+				return true;
 			},
 		});
 

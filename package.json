@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-file-diff",
-	"version": "1.1.2",
-	"description": "Shows the differences between two files.",
+	"name": "obsidian-file-diff-universal",
+	"version": "1.2.0",
+	"description": "Shows the differences between two files (supports all text file types in reading mode).",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
@@ -15,8 +15,8 @@
 	"keywords": [
 		"obsidian"
 	],
-	"author": "Till Friebe",
-	"authorUrl": "https://friebetill.github.io/",
+	"author": "Till Friebe (forked by Dan)",
+	"authorUrl": "https://github.com/daniel347x/obsidian-file-diff-universal",
 	"license": "MIT",
 	"dependencies": {
 		"diff": "^5.1.0",
