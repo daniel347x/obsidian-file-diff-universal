@@ -11,8 +11,8 @@ import { SelectFileModal } from './components/modals/select_file_modal';
 export default class FileDiffPlugin extends Plugin {
 	fileDiffMergeWarningKey = 'file-diff-merge-warning';
 	
-	// Hardcoded path for diff spec files (Windows absolute path)
-	readonly DIFF_SPEC_BASE_PATH = 'E:\\__daniel347x\\__Obsidian\\__Inking into Mind\\--TypingMind\\Projects - All\\Projects - Individual\\TODO\\temp\\obsidian-diff\\diff-spec-';
+	// Hardcoded vault-relative path for diff spec files
+	readonly DIFF_SPEC_BASE_PATH = '--TypingMind/Projects - All/Projects - Individual/TODO/temp/obsidian-diff/diff-spec-';
 
 	override onload(): void {
 		this.registerView(
@@ -125,7 +125,7 @@ export default class FileDiffPlugin extends Plugin {
 				name: `Compare (Index ${i})`,
 				callback: async () => {
 					try {
-						// Read diff spec from hardcoded temp location
+						// Read diff spec from vault-relative path
 						const specPath = `${this.DIFF_SPEC_BASE_PATH}${i}.json`;
 						
 						console.log(`[File Diff Index ${i}] Reading spec from: ${specPath}`);
@@ -135,7 +135,7 @@ export default class FileDiffPlugin extends Plugin {
 						const spec = JSON.parse(specContent);
 						
 						console.log(`[File Diff Index ${i}] Spec loaded:`, spec);
-						new Notice(`File Diff Index ${i}: Files: ${spec.file1} vs ${spec.file2}`);
+						new Notice(`File Diff Index ${i}: Files loaded`);
 
 						// Get TFile objects from vault-relative paths
 						const file1 = this.app.vault.getAbstractFileByPath(spec.file1);
@@ -166,6 +166,7 @@ export default class FileDiffPlugin extends Plugin {
 						});
 
 						console.log(`[File Diff Index ${i}] Diff view opened successfully`);
+						new Notice(`File Diff Index ${i}: Success!`, 3000);
 						
 					} catch (error) {
 						new Notice(`File Diff Index ${i}: ERROR - ${error.message}`, 5000);
