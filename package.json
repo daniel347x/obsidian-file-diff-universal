@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-file-diff-universal",
-	"version": "1.4.2",
+	"version": "1.4.3",
 	"description": "Shows the differences between two files (supports all text file types in reading mode + indexed comparisons).",
 	"main": "main.js",
 	"scripts": {

@@ -54,7 +54,10 @@ export class DifferencesView extends ItemView {
 		if (this.state?.diffIndex !== undefined) {
 			const emojiMap: { [key: number]: string } = { 0: '📜', 1: '⚔️', 2: '📖', 3: '🗡️', 4: '🏺', 5: '🔱', 6: '🛡️', 7: '⚖️', 8: '🕯️', 9: '🏛️' };
 			const emoji = emojiMap[this.state.diffIndex] || '📜';
-			return `${emoji} PARALLAX [${this.state.diffIndex}]`;
+			// Add .md extension if both files are markdown (for better rendering)
+			const isMarkdown = this.state.file1?.extension === 'md' && this.state.file2?.extension === 'md';
+			const ext = isMarkdown ? '.md' : '';
+			return `${emoji} PARALLAX [${this.state.diffIndex}]${ext}`;
 		}
 		if (this.state?.file1 && this.state?.file2) {
 			return (
