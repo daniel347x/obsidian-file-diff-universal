@@ -1,4 +1,4 @@
-import { Plugin, TFile } from 'obsidian';
+import { Plugin, TFile, Notice } from 'obsidian';
 
 import {
 	DifferencesView,
@@ -127,17 +127,36 @@ export default class FileDiffPlugin extends Plugin {
 					try {
 						// Read diff spec from hardcoded temp location
 						const specPath = `${this.DIFF_SPEC_BASE_PATH}${i}.json`;
+						
+						console.log(`[File Diff Index ${i}] Reading spec from: ${specPath}`);
+						new Notice(`File Diff Index ${i}: Loading spec...`);
+						
 						const specContent = await this.app.vault.adapter.read(specPath);
 						const spec = JSON.parse(specContent);
+						
+						console.log(`[File Diff Index ${i}] Spec loaded:`, spec);
+						new Notice(`File Diff Index ${i}: Files: ${spec.file1} vs ${spec.file2}`);
 
 						// Get TFile objects from vault-relative paths
 						const file1 = this.app.vault.getAbstractFileByPath(spec.file1);
 						const file2 = this.app.vault.getAbstractFileByPath(spec.file2);
 
-						if (!file1 || !file2) {
-							console.error(`File Diff Index ${i}: Could not find files`, spec);
+						console.log(`[File Diff Index ${i}] file1:`, file1);
+						console.log(`[File Diff Index ${i}] file2:`, file2);
+
+						if (!file1) {
+							new Notice(`File Diff Index ${i}: ERROR - File 1 not found: ${spec.file1}`, 5000);
+							console.error(`[File Diff Index ${i}] File 1 not found:`, spec.file1);
 							return;
 						}
+
+						if (!file2) {
+							new Notice(`File Diff Index ${i}: ERROR - File 2 not found: ${spec.file2}`, 5000);
+							console.error(`[File Diff Index ${i}] File 2 not found:`, spec.file2);
+							return;
+						}
+
+						new Notice(`File Diff Index ${i}: Opening diff view...`);
 
 						// Open diff view directly (no modal)
 						this.openDifferencesView({
@@ -145,8 +164,12 @@ export default class FileDiffPlugin extends Plugin {
 							file2: file2 as TFile,
 							showMergeOption: false,
 						});
+
+						console.log(`[File Diff Index ${i}] Diff view opened successfully`);
+						
 					} catch (error) {
-						console.error(`File Diff Index ${i}: Failed to load spec`, error);
+						new Notice(`File Diff Index ${i}: ERROR - ${error.message}`, 5000);
+						console.error(`[File Diff Index ${i}] Failed:`, error);
 					}
 				},
 			});
